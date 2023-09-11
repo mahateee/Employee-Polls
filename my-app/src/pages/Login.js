@@ -1,12 +1,25 @@
 import React from "react";
+import { useState } from "react";
 import Container from "../components/Container";
+import { useLocation, useNavigate } from "react-router-dom";
+import { handleLogin } from "../actions/authedUser";
+import { connect } from "react-redux";
+function Login(props) {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
-export default function Login() {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    props.dispatch(handleLogin(username, password));
+    // navigate(location.state?.path || "/Dashbord");
+  };
   return (
     <section class="bg-gray-50 dark:bg-gray-900 py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6 ">
       <div class="flex flex-col items-center justify-center  px-6 py-8 mx-auto md:h-screen lg:py-0">
         <div class="w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
-          <form class="space-y-6" action="#">
+          <form class="space-y-6" action="#" onSubmit={handleSubmit}>
             <h5 class="text-xl font-medium text-gray-900 dark:text-white">
               Sign in to our platform
             </h5>
@@ -21,6 +34,8 @@ export default function Login() {
                 type="text"
                 name="user"
                 id="user"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                 placeholder="username"
                 required
@@ -37,6 +52,8 @@ export default function Login() {
                 type="password"
                 name="password"
                 id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                 required
@@ -55,3 +72,7 @@ export default function Login() {
     </section>
   );
 }
+const mapStateToProps = ({ authedUser }) => ({
+  authedUser,
+});
+export default connect(mapStateToProps)(Login);

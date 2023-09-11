@@ -1,31 +1,37 @@
 import React from "react";
 import { connect } from "react-redux";
-function Question({ question, author }) {
+import { Link } from "react-router-dom";
+function Question(props) {
+  console.log(props);
+  if (props.question === null) {
+    return <p>This Tweet doesn't existd</p>;
+  }
+  const { id, author, timestamp } = { ...props.question };
   return (
-    <div class="flow-root">
-      <ul role="list" class="divide-y divide-gray-200 dark:divide-gray-700">
-        <li class="py-3 sm:py-4">
-          <div class="flex items-center space-x-4">
-            <div class="flex-shrink-0">
+    <div className="flow-root">
+      <ul role="list" className="divide-y divide-gray-200 dark:divide-gray-700">
+        <li className="py-3 sm:py-4">
+          <div className="flex items-center space-x-4">
+            <div className="flex-shrink-0">
               <img
-                class="w-8 h-8 rounded-full"
+                className="w-8 h-8 rounded-full"
                 src="/docs/images/people/profile-picture-1.jpg"
                 alt="Neil image"
               />
             </div>
-            <div class="flex-1 min-w-0">
-              <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
-                author {author}
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
+                {author}
               </p>
-              <p class="text-sm text-gray-500 truncate dark:text-gray-400">
-                "TIME"
+              <p className="text-sm text-gray-500 truncate dark:text-gray-400">
+                {new Date(timestamp).toDateString()}
               </p>
             </div>
             <button
               type="button"
-              class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-sm rounded-lg text-sm px-4 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+              className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-sm rounded-lg text-sm px-4 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
             >
-              Show
+              <Link to={"questions/" + id}>Show</Link>
             </button>
           </div>
         </li>
@@ -33,4 +39,22 @@ function Question({ question, author }) {
     </div>
   );
 }
+
+// const mapStateToProps = ({ authedUser, users, questions }, { id }) => {
+//   const question = questions[id];
+//   return {
+//     authedUser,
+//     question: question,
+//   };
+// };
+// const mapStateToProps = ({ authedUser, users, questions }, { id }) => {
+//   const question = questions[id];
+//   // const parentTweet = tweet ? tweets[tweet.replyingTo] : null;
+
+//   return {
+//     authedUser,
+//     question: question,
+//   };
+// };
+
 export default connect()(Question);

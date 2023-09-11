@@ -4,22 +4,29 @@ import Leaderboard from "./Leaderboard";
 import Login from "./Login";
 import Poll from "./Poll";
 import PollCreation from "./PollCreation";
+
+import { useEffect } from "react";
 import { connect } from "react-redux";
-import React, { useEffect } from "react";
 import { handleInitialData } from "../actions/shared";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 function App(props) {
   useEffect(() => {
     props.dispatch(handleInitialData());
   }, []);
   return (
-    <div className="App">
-      {/* <Login /> */}
-      {/* <Header /> */}
-      <Dashboard />
-      {/* <Poll /> */}
-      {/* <PollCreation /> */}
-      {/* <Leaderboard /> */}
-    </div>
+    <BrowserRouter>
+      {props.loading === true ? null : (
+        <Routes>
+          <Route path="/" exact element={<Dashboard />} />
+          {/* <Route path="/Dashbord" exact element={<Dashboard />} /> */}
+
+          <Route path="/questions/:id" element={<Poll />} />
+        </Routes>
+      )}
+    </BrowserRouter>
   );
 }
-export default connect()(App);
+const mapStateToProps = ({ authedUser }) => ({
+  loading: authedUser === null,
+});
+export default connect(mapStateToProps)(App);

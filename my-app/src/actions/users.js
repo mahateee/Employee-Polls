@@ -1,8 +1,16 @@
-export const GET_USERS = "GET_USERS";
-
+export const RECEIVE_USERS = "RECEIVE_USERS";
+export const ADD_ANSWER_USER = "ADD_ANSWER_USER";
 export function getUsers(users) {
   return {
-    type: GET_USERS,
+    type: RECEIVE_USERS,
     users,
+  };
+}
+export function addAnswerUser(authedUser, qid, answer) {
+  return {
+    type: ADD_ANSWER_USER,
+    authedUser,
+    qid,
+    answer,
   };
 }
